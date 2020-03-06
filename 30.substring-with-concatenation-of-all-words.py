@@ -46,41 +46,43 @@
 # @lc code=start
 class Solution:
     def findSubstring(self, s: str, words: List[str]) -> List[int]:
+        ret = []
         if len(words) == 0:
-            return []
-        l = len(words[0])
+            return ret          
         d = {}
         for w in words:
             if w in d:
                 d[w] += 1
             else:
                 d[w] = 1
-
-        ans = []
-        for k in range(l):
-            left = k
+        l = len(words[0])
+        n = len(s)
+        count = 0
+        for i in range(l):
             subd = {}
+            left = i
             count = 0
-            for j in range(k,len(s)-l+1,l):
-                tword = s[j:j+l]
-                if tword in d:
-                    if tword in subd:
-                        subd[tword] += 1
+            for j in range(i,n-l+1,l):
+                ww = s[j:j+l]
+                if ww in d:
+                    if ww in subd:
+                        subd[ww] += 1
                     else:
-                        subd[tword] = 1
+                        subd[ww] = 1
                     count += 1
-                    while subd[tword]>d[tword]:
+                    while subd[ww] > d[ww]:
                         subd[s[left:left+l]] -= 1
                         left += l
                         count -= 1
                     if count == len(words):
-                        ans.append(left)
+                        ret.append(left)
                 else:
-                    left = j+l
                     subd = {}
+                    left = j+l
                     count = 0
-        return ans              
-
+        
+        return ret 
+            
 
 # @lc code=end
 
