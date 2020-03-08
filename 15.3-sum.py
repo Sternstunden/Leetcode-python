@@ -37,36 +37,29 @@
 # @lc code=start
 class Solution:
     def threeSum(self, nums: List[int]) -> List[List[int]]:
-        n = len(nums)
-        result = []
+        def nSum(l,r,target,n,res,ret):
+            if n < 2 or r-l+1<n or nums[l]*n>target or nums[r]*n<target:
+                return
+            if n == 2:
+                while l<r:
+                    s = nums[l]+nums[r]
+                    if s == target:
+                        ret.append(res+[nums[l],nums[r]])
+                        l += 1
+                        while l<r and nums[l-1] == nums[l]:
+                            l += 1
+                    elif s<target:
+                        l += 1
+                    else:
+                        r -= 1
+            else:
+                for i in range(l,r+1):
+                    if i == l or (i>l and nums[i-1]!=nums[i]):
+                        nSum(i+1,r,target-nums[i],n-1,res+[nums[i]],ret)
+
+        ret = []
         nums.sort()
-        i = 0
-        while i<= n-3:
-            if nums[i] > 0:
-                break
-            while 1<=i<=n-3 and nums[i]==nums[i-1]:
-                i+=1
-            l = i+1
-            r = n-1
-            while l<r:
-                target = nums[l]+nums[r]+nums[i]
-                if target == 0:
-                    result.append([nums[i],nums[l],nums[r]])
-                    l += 1
-                    while l<r and nums[l-1] == nums[l]:
-                        l+=1
-                    r -= 1
-                    while l<r and nums[r+1] == nums[r]:
-                        r-=1
-                elif target < 0:
-                    l += 1
-                    while l<r and nums[l-1] == nums[l]:
-                        l+=1
-                else:
-                    r -= 1
-                    while l<r and nums[r+1] == nums[r]:
-                        r-=1
-            i += 1
-        return result
+        nSum(0,len(nums)-1,0,3,[],ret)
+        return ret
 # @lc code=end
 
