@@ -32,23 +32,31 @@
 # @lc code=start
 class Solution:
     def trap(self, height: List[int]) -> int:
-        l,r = 0, len(height)-1
+        """
+        水桶问题关键点 -- 短板 
+        左右向中间遍历，去最短那边。
+        选好一侧后，比较目前与这侧最大值。
+        大则取而代之，小则计算在此位置能容纳水量。
+        递增或递减。
+        """
+        l, r = 0, len(height)-1
         res = 0
-        ml, mr = 0, 0
-        while l<r:
+        max_l, max_r = 0, 0
+
+        while l < r:
             if height[l] <= height[r]:
-                if height[l] >= ml:
-                    ml = height[l]
+                if height[l] >= max_l:
+                    max_l = height[l]
                 else:
-                    res += ml - height[l]
+                    res += max_l - height[l]
                 l += 1
             else:
-                if height[r] >= mr:
-                    mr = height[r]
+                if height[r] >= max_r:
+                    max_r = height[r]
                 else:
-                    res += mr - height[r]
+                    res += max_r - height[r]
                 r -= 1
-        
         return res
+
 # @lc code=end
 
